@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 const Avatar = ({userId,name,imageUrl,width,height}) => {
     const onlineUser = useSelector(state => state?.user?.onlineUser)
 
-    //Amit Prajapati
-
     let avatarName = ""
 
     if(name){
@@ -40,10 +38,8 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
             imageUrl ? (
                 <img
                     src={imageUrl}
-                    width={width}
-                    height={height}
                     alt={name}
-                    className='overflow-hidden rounded-full'
+                    className='overflow-hidden w-14 h-14 rounded-full'
                 />
             ) : (
                 name ? (

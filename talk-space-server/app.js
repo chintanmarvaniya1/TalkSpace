@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+const {app,server} =require("./socket/index.js")
 var cors = require('cors');
 const cookiesParser = require('cookie-parser')
 

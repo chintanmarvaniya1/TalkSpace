@@ -38,13 +38,31 @@ function Home() {
     fetchUserDetails()
   },[])
 
+  useEffect(()=>{
+    const socketConnection = io('http://localhost:9000',{
+      auth : {
+        token : localStorage.getItem('token')
+      },
+    })
+
+    socketConnection.on('onlineUser',(data)=>{
+      console.log(data)
+      dispatch(setOnlineUser(data))
+    })
+
+    dispatch(setSocketConnection(socketConnection))
+
+    return ()=>{
+      socketConnection.disconnect()
+    }
+  },[])
+
 
   const basePath = location.pathname === '/'
 
 
   return (
-    // <div>Home</div>
-    <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
+    <div className='grid lg:grid-cols-[400px,1fr] h-screen max-h-screen'>
         <section className={`bg-white ${!basePath && "hidden"} lg:block`}>
            <Sidebar/>
         </section>
@@ -54,7 +72,7 @@ function Home() {
         </section>
 
 
-        <div className={`justify-center items-center flex-col gap-2 hidden ${!basePath ? "hidden" : "lg:flex" }`}>
+        <div className={`justify-center bg-slate-100 items-center flex-col gap-2 hidden ${!basePath ? "hidden" : "lg:flex" }`}>
             <div>
               <img
                 src={logo}

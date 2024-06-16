@@ -8,10 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import EditUserDetail from './EditUserDetail';
 //import Divider from './Divider';
 import { FiArrowUpLeft } from "react-icons/fi";
-//import SearchUser from './SearchUser';
+import SearchUser from './SearchUser.jsx';
 import { FaImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa6";
 import { logout } from '../redux/userSlice';
+import '../index.css'
 
 function Sidebar() {
     const user = useSelector(state => state?.user)
