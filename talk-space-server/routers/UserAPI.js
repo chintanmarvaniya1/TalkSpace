@@ -4,7 +4,7 @@ const {CurrentUser,UpdateUser} = require("../controllers/UserControllers/index.j
 const validateToken = require("../middleware/validateToken")
 
 router.route('/currentuser-detail').get(validateToken,CurrentUser); 
-router.route('/update-user').put(validateToken,UpdateUser); 
+router.route('/update-user').post(validateToken,UpdateUser); 
 
 
 

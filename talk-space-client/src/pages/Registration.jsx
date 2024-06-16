@@ -3,15 +3,14 @@ import { IoClose } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom';
 import InputField from '../components/InputField';
 import uploadFile from '../utilities/uploadfile.js';
-import authService from '../services/AuthService.js'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 
 function userRegistration() {
 
   const [data, setData] = useState({
     name: "",
+    username:"",
     email: "",
     username:"",
     password: "",
@@ -24,23 +23,29 @@ function userRegistration() {
   const handleSubmit = async (e) => {
     
     e.preventDefault()
+    e.stopPropagation()
+    const URL = `http://localhost:9000/api/signup`
+      try {
+          const response = await axios.post(URL,data)
 
-    const result = await authService.createAccount(data);
-    console.log("Registration File",result);
-    if(result){
-      toast.success(result.data.message)
-      setData({
-        name : "",
-        email : "",
-        username:"",
-        password : "",
-        profile_pic : ""
-      })
-      navigate("/email")
-    }else{
-      toast.error("Something Went Wrong")
-    }
-    
+          toast.success(response.data.message)
+
+          if(response.data.success){
+              setData({
+                name : "",
+                email : "",
+                username:"",
+                password : "",
+                profile_pic : ""
+              })
+
+              navigate('/email')
+
+          }
+      } catch (error) {
+          toast.error(error?.response?.data?.message)
+      }
+
   }
 
   const handleOnChange = (e) => {
@@ -130,7 +135,6 @@ function userRegistration() {
           </button>
 
         </form>
-        <ToastContainer />
 
         <p className='my-3 text-center'>Already have account ? <Link to={"/email"} className='hover:text-primary font-semibold'>Login</Link></p>
       </div>
