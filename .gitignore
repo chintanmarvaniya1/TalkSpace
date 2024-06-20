@@ -1,3 +1,5 @@
 talk-space-server/node_modules
+talk-space-server/.env
 
 talk-space-client/node_modules
+talk-space-client/.env
