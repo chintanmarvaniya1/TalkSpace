@@ -18,9 +18,42 @@ function Sidebar() {
     const user = useSelector(state => state?.user)
     const [editUserOpen, setEditUserOpen] = useState(false)
     const [openSearchUser, setOpenSearchUser] = useState(false)
+    const socketConnection = useSelector(state => state?.user?.socketConnection)
     const [allUser, setAllUser] = useState([])
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        if(socketConnection){
+            socketConnection.emit('sidebar',user._id)
+            
+            socketConnection.on('conversation',(data)=>{
+                console.log('conversation',data)
+                
+                const conversationUserData = data.map((conversationUser,index)=>{
+                    if(conversationUser?.sender?._id === conversationUser?.receiver?._id){
+                        return{
+                            ...conversationUser,
+                            userDetails : conversationUser?.sender
+                        }
+                    }
+                    else if(conversationUser?.receiver?._id !== user?._id){
+                        return{
+                            ...conversationUser,
+                            userDetails : conversationUser.receiver
+                        }
+                    }else{
+                        return{
+                            ...conversationUser,
+                            userDetails : conversationUser.sender
+                        }
+                    }
+                })
+
+                setAllUser(conversationUserData)
+            })
+        }
+    },[socketConnection,user])
 
     const handleLogout = () => {
         dispatch(logout())
@@ -28,17 +61,17 @@ function Sidebar() {
         localStorage.clear()
     }
     return (
-        <div className='w-full h-full grid grid-cols-[48px,1fr] bg-white'>
-            <div className='bg-slate-100 w-12 h-full rounded-tr-lg rounded-br-lg py-5 text-slate-600 flex flex-col justify-between'>
+        <div className='w-full h-full grid grid-cols-[62px,1fr] bg-white'>
+            <div className='bg-slate-100 w-16 h-full rounded-tr-lg rounded-br-lg py-8 px-1 text-slate-600 flex flex-col justify-between'>
                 <div>
-                    <NavLink className={({ isActive }) => `w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-slate-200 rounded ${isActive && "bg-slate-200"}`} title='chat'>
+                    <NavLink className={({ isActive }) => `w-14 h-14 flex justify-center items-center  cursor-pointer hover:bg-slate-200 rounded ${isActive && "bg-slate-200"}`} title='chat'>
                         <IoChatbubbleEllipses
-                            size={20}
+                            size={24}
                         />
                     </NavLink>
 
-                    <div title='add friend' onClick={() => setOpenSearchUser(true)} className='w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-slate-200 rounded' >
-                        <FaUserPlus size={20} />
+                    <div title='add friend' onClick={() => setOpenSearchUser(true)} className='w-14 h-14 flex justify-center items-center cursor-pointer hover:bg-slate-200 rounded' >
+                        <FaUserPlus size={24} />
                     </div>
                 </div>
 
@@ -61,12 +94,12 @@ function Sidebar() {
             </div>
 
             <div className='w-full'>
-                <div className='h-16 flex items-center'>
+                <div className='h-20 flex items-center'>
                     <h2 className='text-xl font-bold p-4 text-slate-800'>Message</h2>
                 </div>
                 <div className='bg-slate-200 p-[0.5px]'></div>
 
-                <div className=' h-[calc(100vh-65px)] overflow-x-hidden overflow-y-auto scrollbar'>
+                <div className=' h-[calc(100vh-81px)] overflow-x-hidden overflow-y-auto scrollbar'>
                     {
                         allUser.length === 0 && (
                             <div className='mt-12'>

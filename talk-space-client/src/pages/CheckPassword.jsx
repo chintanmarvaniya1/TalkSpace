@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar.jsx';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../redux/userSlice';
 import InputField from '../components/InputField.jsx';
+import configuration from '../configuration/envImport.js';
 
 function CheckPassword() {
   const [data,setData] = useState({
@@ -37,7 +38,7 @@ function CheckPassword() {
     e.preventDefault()
     e.stopPropagation()
 
-    const URL = `http://localhost:9000/api/password`
+    const URL = `${configuration.backendURL}/api/password`
 
     try {
         const response = await axios({

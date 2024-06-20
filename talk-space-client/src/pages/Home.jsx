@@ -6,6 +6,7 @@ import { logout, setOnlineUser, setSocketConnection, setUser } from '../redux/us
 import Sidebar from '../components/Sidebar'
 import logo from '../assets/logo.png'
 import io from 'socket.io-client'
+import configuration from '../configuration/envImport'
 
 function Home() {
   const user = useSelector(state => state.user)
@@ -15,7 +16,7 @@ function Home() {
 
   const fetchUserDetails = async()=>{
     try {
-        const URL = `http://localhost:9000/api/currentuser-detail`
+        const URL = `${configuration.backendURL}/api/currentuser-detail`
         const response = await axios({
           url : URL,
           withCredentials : true
@@ -39,7 +40,7 @@ function Home() {
   },[])
 
   useEffect(()=>{
-    const socketConnection = io('http://localhost:9000',{
+    const socketConnection = io(`${configuration.backendURL}`,{
       auth : {
         token : localStorage.getItem('token')
       },

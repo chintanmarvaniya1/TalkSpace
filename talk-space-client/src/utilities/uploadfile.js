@@ -1,4 +1,5 @@
-const url = `https://api.cloudinary.com/v1_1/dt3qsew4a/auto/upload`
+import configuration from "../configuration/envImport"
+const url = `https://api.cloudinary.com/v1_1/${configuration.clodinary}/auto/upload`
 
 
 const uploadFile = async(file)=>{

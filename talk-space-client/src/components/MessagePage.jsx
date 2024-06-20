@@ -42,28 +42,90 @@ function MessagePage() {
   }, [allMessage])
 
   const handleUploadImageVideoOpen = () => {
+    setOpenImageVideoUpload(preve => !preve)
     
   }
   const handleUploadImage = async(e)=>{
-    
-  }
-  const handleClearUploadImage = ()=>{
-    
+    const file = e.target.files[0]
+
+    setLoading(true)
+    const uploadPhoto = await uploadFile(file)
+    setLoading(false)
+    setOpenImageVideoUpload(false)
+
+    setMessage(preve => {
+      return{
+        ...preve,
+        imageUrl : uploadPhoto.url
+      }
+    })
   }
 
   const handleUploadVideo = async(e)=>{
-    
+    const file = e.target.files[0]
+
+    setLoading(true)
+    const uploadPhoto = await uploadFile(file)
+    setLoading(false)
+    setOpenImageVideoUpload(false)
+
+    setMessage(preve => {
+      return{
+        ...preve,
+        videoUrl : uploadPhoto.url
+      }
+    })
   }
+  const handleClearUploadImage = ()=>{
+    setMessage(preve => {
+      return{
+        ...preve,
+        imageUrl : ""
+      }
+    })
+  }
+
+  
   const handleClearUploadVideo = ()=>{
-    
+    setMessage(preve => {
+      return{
+        ...preve,
+        videoUrl : ""
+      }
+    })
   }
 
   const handleOnChange = (e)=>{
-    
+    const { name, value} = e.target
+
+    setMessage(preve => {
+      return{
+        ...preve,
+        text : value
+      }
+    })
   }
 
   const handleSendMessage = (e)=>{
     e.preventDefault()
+
+    if(message.text || message.imageUrl || message.videoUrl){
+      if(socketConnection){
+        socketConnection.emit('new message',{
+          sender : user?._id,
+          receiver : params.userId,
+          text : message.text,
+          imageUrl : message.imageUrl,
+          videoUrl : message.videoUrl,
+          msgByUserId : user?._id
+        })
+        setMessage({
+          text : "",
+          imageUrl : "",
+          videoUrl : ""
+        })
+      }
+    }
 
   }
 
@@ -89,15 +151,14 @@ function MessagePage() {
 
   return (
     <div style={{ backgroundImage : `url(${backgroundImage})`}} className='bg-no-repeat bg-cover'>
-          <header className='sticky top-0 h-16 bg-white flex justify-between items-center px-4'>
+          <header className='sticky top-0 h-20 bg-white flex justify-between items-center px-8 py-2'>
               <div className='flex items-center gap-4'>
                   <Link to={"/"} className='lg:hidden'>
                       <FaAngleLeft size={25}/>
                   </Link>
                   <div>
                       <Avatar
-                        width={50}
-                        height={50}
+                        
                         imageUrl={dataUser?.profile_pic}
                         name={dataUser?.name}
                         userId={dataUser?._id}
@@ -105,9 +166,9 @@ function MessagePage() {
                   </div>
                   <div>
                      <h3 className='font-semibold text-lg my-0 text-ellipsis line-clamp-1'>{dataUser?.name}</h3>
-                     <p className='-my-2 text-sm'>
+                     <p className='-my-1 text-md'>
                       {
-                        dataUser.online ? <span className='text-primary'>online</span> : <span className='text-slate-400'>offline</span>
+                        dataUser.online ? <span className='text-primary text-green-600'>online</span> : <span className='text-slate-400'>offline</span>
                       }
                      </p>
                   </div>
@@ -121,7 +182,7 @@ function MessagePage() {
           </header>
 
           {/***show all message */}
-          <section className='h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll scrollbar relative bg-slate-200 bg-opacity-50'>
+          <section className='h-[calc(100vh-160px)] overflow-x-hidden overflow-y-scroll scrollbar relative bg-slate-200 bg-opacity-50'>
                   
                 
                   {/**all message show here */}
@@ -206,7 +267,7 @@ function MessagePage() {
           </section>
 
           {/**send message */}
-          <section className='h-16 bg-white flex items-center px-4'>
+          <section className='h-20 bg-white flex items-center px-4'>
               <div className='relative '>
                   <button onClick={handleUploadImageVideoOpen} className='flex justify-center items-center w-11 h-11 rounded-full hover:bg-primary hover:text-white'>
                     <FaPlus size={20}/>

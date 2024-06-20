@@ -33,13 +33,13 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
 
     const isOnline = onlineUser.includes(userId)
   return (
-    <div className={`text-slate-800  rounded-full font-bold relative`} style={{width : width+"px", height : height+"px" }}>
+    <div className={`text-slate-800  rounded-full font-bold relative w-14 h-14`} >
         {
             imageUrl ? (
                 <img
                     src={imageUrl}
                     alt={name}
-                    className='overflow-hidden w-14 h-14 rounded-full'
+                    className={`overflow-hidden w-14 h-14 rounded-full ${isOnline? "border-2 border-green-500": "" }`}
                 />
             ) : (
                 name ? (
@@ -56,7 +56,7 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
 
         {
           isOnline && (
-            <div className='bg-green-600 p-1 absolute bottom-2 -right-1 z-10 rounded-full'></div>
+            <div className=' p-1 absolute bottom-2 -right-1 z-10 rounded-full'></div>
           )
         }
       

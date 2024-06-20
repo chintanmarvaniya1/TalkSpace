@@ -6,6 +6,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast';
 import { PiUserCircle } from "react-icons/pi";
 import InputField from '../components/InputField';
+import configuration from '../configuration/envImport.js';
 
 function CheckEmail() {
   const [data,setData] = useState({
@@ -28,7 +29,8 @@ function CheckEmail() {
     e.preventDefault()
     e.stopPropagation()
 
-    const URL = `http://localhost:9000/api/email`
+
+    const URL = `${configuration.backendURL}/api/email`
 
     try {
         const response = await axios.post(URL,data)

@@ -7,6 +7,7 @@ import taost from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../redux/userSlice'
 import InputField from './InputField'
+import configuration from '../configuration/envImport.js';
 
 
 function EditUserDetail({ onClose, user }) {
@@ -63,7 +64,7 @@ function EditUserDetail({ onClose, user }) {
     e.preventDefault()
     e.stopPropagation()
     try {
-      const URL = `http://localhost:9000/api/update-user`
+      const URL = `${configuration.backendURL}/api/update-user`
 
       const response = await axios({
           method : 'post',

@@ -5,6 +5,7 @@ import UserSearchCard from './UserSearchCard';
 import toast from 'react-hot-toast'
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
+import configuration from '../configuration/envImport';
 
 function SearchUser({onClose}) {
     const [searchUser,setSearchUser] = useState([])
@@ -12,7 +13,7 @@ function SearchUser({onClose}) {
     const [search,setSearch] = useState("")
 
     const handleSearchUser = async()=>{
-        const URL = `http://localhost:9000/api/search-user`
+        const URL = `${configuration.backendURL}/api/search-user`
         try {
             setLoading(true)
             const response = await axios.post(URL,{

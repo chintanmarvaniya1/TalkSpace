@@ -5,6 +5,7 @@ import InputField from '../components/InputField';
 import uploadFile from '../utilities/uploadfile.js';
 import axios from 'axios'
 import toast from 'react-hot-toast';
+import configuration from '../configuration/envImport.js';
 
 function userRegistration() {
 
@@ -24,7 +25,7 @@ function userRegistration() {
     
     e.preventDefault()
     e.stopPropagation()
-    const URL = `http://localhost:9000/api/signup`
+    const URL = `${configuration.backendURL}/api/signup`
       try {
           const response = await axios.post(URL,data)
 
